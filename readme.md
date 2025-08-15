@@ -31,9 +31,9 @@ SERVER_URL=http://localhost:3000```
 ##▶️ Uso
 1. Inicia Ollama en tu máquina.
 2. Instala dependencias:
-	npm install
+	```npm install```
 3. Arranca el servidor:
-	npm start
+	```npm start```
 4. Envía una petición POST a /chat mediante el chat. El servidor devolverá un archivo DOCX listo para descargar.
 
 ##📜 Licencia
