@@ -19,7 +19,7 @@ Actualmente implementa la generación de **informes DOCX** desde una plantilla, 
 
 -  **`nombre`** → Nombre del informe, proyecto o destinatario.
 
--  **`texto`** → Cuerpo del informe; puede contener `\n\n` para separar p��rrafos.
+-  **`texto`** → Cuerpo del informe; puede contener `\n\n` para separar párrafos.
 
 -  **`autor`** → Nombre del autor o firmante.
 
