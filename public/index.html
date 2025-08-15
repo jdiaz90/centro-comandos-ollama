@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Asistente</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 720px; margin: 30px auto; }
+    #chat { border:1px solid #ccc; padding:10px; width:100%; height:360px; overflow:auto; margin-bottom:10px; }
+    .user { color: #1f5fbf; }
+    .sys { color: #666; font-style: italic; }
+    #input { width: calc(100% - 110px); }
+    #send { width: 90px; }
+  </style>
+</head>
+<body>
+  <h1>Asistente</h1>
+  <div id="chat"></div>
+  <input type="text" id="input" placeholder="Escribe aquí..." />
+  <button id="send">Enviar</button>
+  <p class="sys">Escribe tu petición en lenguaje natural y recibirás el documento generado.</p>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const send = document.getElementById('send');
+
+    function addMessage(text, from) {
+      const p = document.createElement('p');
+      p.textContent = `${from}: ${text}`;
+      p.className = from === 'Tú' ? 'user' : 'sys';
+      chat.appendChild(p);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const msg = input.value.trim();
+      if (!msg) return;
+      addMessage(msg, 'Tú');
+      input.value = '';
+      input.disabled = true;
+      send.disabled = true;
+
+      try {
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mensaje: msg })
+        });
+
+        if (!res.ok) throw new Error(await res.text());
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'informe.docx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        addMessage('Documento descargado.', 'Sistema');
+      } catch (e) {
+        addMessage('Error: ' + e.message, 'Sistema');
+      } finally {
+        input.disabled = false;
+        send.disabled = false;
+        input.focus();
+      }
+    }
+
+    send.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+  </script>
+</body>
+</html>

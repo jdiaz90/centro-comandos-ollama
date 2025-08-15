@@ -1,0 +1,16 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Archivos de entorno
+.env
+
+# Salidas generadas
+output/
+*.docx
+*.pdf
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
